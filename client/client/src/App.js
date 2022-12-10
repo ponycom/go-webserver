@@ -1,37 +1,34 @@
 import logo from './logo.svg';
-//import Register from './pages/Register';
-//import Home from './pages/Home';
-//import Login from './pages/Login';
 
-import Register from './components/Register';
-import Login from './components/Login';
-import Home from './components/Home';
-import Layout from './components/Layout';
-import Editor from './components/Editor';
-import Admin from './components/Admin';
-import Missing from './components/Missing';
+import Register from './pages/Register/Register';
+import Login from './pages/Login/Login';
+import Home from './pages/Home/Home';
+import Layout from './pages/Layout';
+import Editor from './pages/Editor/Editor';
+import Admin from './pages/Admin/Admin';
+import Missing from './pages/Missing/Missing';
 import Unauthorized from './components/Unauthorized';
-import Lounge from './components/Lounge';
-import LinkPage from './components/LinkPage';
+import Lounge from './pages/Lounge/Lounge';
 import RequireAuth from './components/RequireAuth';
-import { Routes, Route } from 'react-router-dom';
+import React, { Component, Suspense } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useContext } from "react";
+import { SiteContext } from "./context/SiteContext";
+import "./style/dark.scss";
+import Calendar from './pages/Calendar/Calendar';
+
+const loading = (
+  <div className="pt-3 text-center">
+    <div className="sk-spinner sk-spinner-pulse"></div>
+  </div>
+)
 
 function App() {
 
-  // return (
-  //   <div className="App">
-  //         <BrowserRouter>
-  //           <Routes>
-  //             <Route path="/dashboard" element={<Home />} />
-  //             <Route path="/" element={<Login />} />
-  //             <Route path="/register" element={<Register />} />
-  //           </Routes>
-  //       </BrowserRouter>
-  //   </div>
-
-  // );
+  const { state , dispatch } = useContext(SiteContext);
 
   return (
+    <div className={ state?.colorMode=='dark' ? "app dark" : state?.colorMode=='green' ? "app green" :  state?.colorMode=='pink' ? "app pink" : "app" }>
     <Routes>
       <Route path="/" element={<Layout />}>
         {/* public routes */}
@@ -40,16 +37,19 @@ function App() {
 
         {/* protect these routes */}
         <Route element={<RequireAuth />}>
-          <Route path="/" element={<Home />} />
-          <Route path="editor" element={<Editor />} />
-          <Route path="admin" element={<Admin />} />
-          <Route path="lounge" element={<Lounge />} />
+          
+            <Route path="/" element={<Home />} />
+            <Route path="editor" element={<Editor />} />
+            <Route path="admin" element={<Admin />} />
+            <Route path="lounge" element={<Lounge />} />
+            <Route path="calendar" element={<Calendar />} />
         </Route>
 
         {/* catch all */}
         <Route path="*" element={<Missing />} />
       </Route>
     </Routes>
+    </div>
   );
 }
 

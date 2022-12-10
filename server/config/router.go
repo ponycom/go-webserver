@@ -46,4 +46,5 @@ func WebConfig(e *echo.Echo) {
 	bookRoutes.GET("/:id", bookController.FindByID)
 	bookRoutes.PUT("/:id", bookController.Update)
 	bookRoutes.DELETE("/:id", bookController.Delete)
+
 }
